@@ -41,10 +41,12 @@ def getMeterResults():
         with open(logFile, "a") as myfile:
             myfile.write("%s - Could not close connection" % timePoint)
                 
-    tarief = 0
-    vermogenAfgenomen = 0
-    T1afgenomen = 0
-    T2afgenomen = 0
+    tarief = ""
+    vermogenAfgenomen = ""
+    voltage = ""
+    ampere = ""
+    T1afgenomen = ""
+    T2afgenomen = ""
     gasAfgenomen = ""
 
     for row in stack:
