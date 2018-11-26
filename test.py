@@ -4,7 +4,7 @@ import sys
 import os.path
 
 fileName = "output.csv"
-
+logFile = "logging.log"
 
 #Set COM port config
 ser = serial.Serial()
@@ -18,22 +18,29 @@ ser.timeout=20
 ser.port="/dev/ttyUSB0"
 
 def getMeterResults():
+    timePoint = int(time.time())
+    stack = [ ]
+
     #Open COM port
     try:
         ser.open()
     except:
-        sys.exit ("Fout bij het openen van %s. Programma afgebroken."  % ser.name)
-
-    stack = [ ]
+        with open(logFile, "a") as myfile:
+            myfile.write("Fout bij het openen van verbinding."  % timePoint)
 
     try:
         for x in range(26):
             stack.append(ser.readline())
-        timePoint = int(time.time())
+    except:
+        with open(logFile, "a") as myfile:
+            myfile.write("%s - Seriele poort kan niet gelezen worden." % timePoint)
+
+    try:
         ser.close()
     except:
-        sys.exit("Seriele poort %s kan niet gelezen worden. Programma afgebroken." % ser.name )
-
+        with open(logFile, "a") as myfile:
+            myfile.write("%s - Could not close connection" % timePoint)
+                
     tarief = 0
     vermogenAfgenomen = 0
     T1afgenomen = 0
