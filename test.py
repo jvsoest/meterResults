@@ -26,20 +26,20 @@ def getMeterResults():
         ser.open()
     except:
         with open(logFile, "a") as myfile:
-            myfile.write("Fout bij het openen van verbinding."  % timePoint)
+            myfile.write("Fout bij het openen van verbinding.\n"  % timePoint)
 
     try:
         for x in range(26):
             stack.append(ser.readline())
     except:
         with open(logFile, "a") as myfile:
-            myfile.write("%s - Seriele poort kan niet gelezen worden." % timePoint)
+            myfile.write("%s - Seriele poort kan niet gelezen worden.\n" % timePoint)
 
     try:
         ser.close()
     except:
         with open(logFile, "a") as myfile:
-            myfile.write("%s - Could not close connection" % timePoint)
+            myfile.write("%s - Could not close connection\n" % timePoint)
                 
     tarief = ""
     vermogenAfgenomen = ""
@@ -49,29 +49,33 @@ def getMeterResults():
     T2afgenomen = ""
     gasAfgenomen = ""
 
-    for row in stack:
-        row = row.decode("UTF-8")
-        if row[0:9] == "1-0:1.8.1":
-            T1afgenomen = int(row[10:16])
-        if row[0:9] == "1-0:1.8.2":
-            T2afgenomen = int(row[10:16])
-        if row[0:9] == "1-0:2.8.1":
-            T1terug = int(row[10:16])
-        if row[0:9] == "1-0:2.8.2":
-            T2terug = int(row[10:16])
-        if row[0:9] == "1-0:1.7.0":
-            vermogenAfgenomen = int(float(row[10:16])*1000) #watts
-        if row[0:10] == "1-0:32.7.0":
-            voltage = float(row[11:16])
-        if row[0:10] == "1-0:31.7.0":
-            ampere = float(row[11:14])
-        if row[0:9] == "1-0:2.7.0":
-            vermogenTerug = int(float(row[10:16])*1000) #watts
-        if row[0:9] == "0-0:96.14":
-            tarief = int(row[12:16]) #1=hoog, 2=laag
-        if row[0:10] == "0-1:24.2.1":
-            gasAfgenomen = float(row[26:35]) #m3
-
+    try:
+        for row in stack:
+            row = row.decode("UTF-8")
+            if row[0:9] == "1-0:1.8.1":
+                T1afgenomen = int(row[10:16])
+            if row[0:9] == "1-0:1.8.2":
+                T2afgenomen = int(row[10:16])
+            if row[0:9] == "1-0:2.8.1":
+                T1terug = int(row[10:16])
+            if row[0:9] == "1-0:2.8.2":
+                T2terug = int(row[10:16])
+            if row[0:9] == "1-0:1.7.0":
+                vermogenAfgenomen = int(float(row[10:16])*1000) #watts
+            if row[0:10] == "1-0:32.7.0":
+                voltage = float(row[11:16])
+            if row[0:10] == "1-0:31.7.0":
+                ampere = float(row[11:14])
+            if row[0:9] == "1-0:2.7.0":
+                vermogenTerug = int(float(row[10:16])*1000) #watts
+            if row[0:9] == "0-0:96.14":
+                tarief = int(row[12:16]) #1=hoog, 2=laag
+            if row[0:10] == "0-1:24.2.1":
+                gasAfgenomen = float(row[26:35]) #m3
+    except:
+        with open(logFile, "a") as myfile:
+            myfile.write("interpreting one variable failed\n")
+    
     return {"timeStamp": timePoint,
             "tariff": tarief,
             "power": vermogenAfgenomen,
