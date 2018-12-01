@@ -25,13 +25,7 @@ def index():
     return render_template("index.html",
         powerLow = str(meterStats.T1.values[0]),
         powerHigh=str(meterStats.T2.values[0]),
-        gas=str(meterStats.gas.values[0]),
-        figureHour1=makePowerFigure(1),
-        figureHour3=makePowerFigure(3),
-        figureHour6=makePowerFigure(6),
-        figureHour12=makePowerFigure(12),
-        figureHour24=makePowerFigure(24),
-        figureHour48=makePowerFigure(48))
+        gas=str(meterStats.gas.values[0]))
 
 @app.route('/figure/power/<int:myHours>.png')
 def plotPowerFigure(myHours):
@@ -43,21 +37,9 @@ def plotPowerFigure(myHours):
         fig = Figure()
         mySubSet.plot.line(x='time', y='power')
         
-        output = io.BytesIO()
-        FigureCanvas(fig).print_png(output)
-        return Response(output.getvalue(), mimetype='image/png')
-
-def makePowerFigure(myHours):
-    meterStats = readStats()
-    oneDayAgo = pd.datetime.now()-pd.DateOffset(hours=myHours)
-    mySubSet = meterStats[meterStats['time'] >= oneDayAgo]
-   
-    if (mySubSet.time.count() > 2):
-        mySubSet.plot.line(x='time', y='power')
-        
         pngOutputBytes = io.BytesIO()
         plt.savefig(pngOutputBytes, format="png")
         pngOutputBytes.seek(0)
-        return base64.b64encode(pngOutputBytes.read()).decode("UTF-8")
+        return Response(pngOutputBytes.read(), mimetype='image/png')
 
 app.run(debug=True, host='0.0.0.0', port=5000)

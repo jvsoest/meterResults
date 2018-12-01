@@ -1,6 +1,15 @@
 <html>
     <head>
         <title>Meterstanden</title>
+        <script>
+            function changeFigure() {
+                var e = document.getElementById("timeSelectPower");
+                var dropDownValue = e.options[e.selectedIndex].value;
+
+                var figure = document.getElementById("figurePower");
+                figure.src = "./figure/power/" + dropDownValue + ".png"
+            }
+        </script>
     </head>
 
     <body>
@@ -21,17 +30,15 @@
         </table>
 
         <h2>Power consumption</h2>
-        <h3>Last hour</h3>
-        <img src="data:image/png;base64, {{figureHour1|safe}}"/>
-        <h3>Last 3 hours</h3>
-        <img src="data:image/png;base64, {{figureHour3|safe}}"/>
-        <h3>Last 6 hours</h3>
-        <img src="data:image/png;base64, {{figureHour6|safe}}"/>
-        <h3>Last 12 hours</h3>
-        <img src="data:image/png;base64, {{figureHour12|safe}}"/>
-        <h3>Last 24 hours</h3>
-        <img src="data:image/png;base64, {{figureHour24|safe}}"/>
-        <h3>Last 48 hours</h3>
-        <img src="data:image/png;base64, {{figureHour48|safe}}"/>
+        <select id="timeSelectPower" onchange="changeFigure()">
+            <option value="1">Last hour</option>
+            <option value="3">Last 3 hours</option>
+            <option value="6">Last 6 hours</option>
+            <option value="12">Last 12 hours</option>
+            <option value="24">Last 24 hours</option>
+            <option value="48">Last 2 days</option>
+        </select>
+        
+        <img src="./figure/power/1.png" id="figurePower"/>
     </body>
 </html>
