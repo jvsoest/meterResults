@@ -25,13 +25,13 @@ def index():
     return render_template("index.html",
         powerLow = str(meterStats.T1.values[0]),
         powerHigh=str(meterStats.T2.values[0]),
-        gas=str(meterStats.gas.values[0]))#,
-        #figureHour1=makePowerFigure(1),
-        #figureHour3=makePowerFigure(3),
-        #figureHour6=makePowerFigure(6),
-        #figureHour12=makePowerFigure(12),
-        #figureHour24=makePowerFigure(24),
-        #figureHour48=makePowerFigure(48))
+        gas=str(meterStats.gas.values[0]),
+        figureHour1=makePowerFigure(1),
+        figureHour3=makePowerFigure(3),
+        figureHour6=makePowerFigure(6),
+        figureHour12=makePowerFigure(12),
+        figureHour24=makePowerFigure(24),
+        figureHour48=makePowerFigure(48))
 
 @app.route('/figure/power/<int:myHours>.png')
 def plotPowerFigure(myHours):
