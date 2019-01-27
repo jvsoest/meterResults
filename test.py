@@ -70,7 +70,7 @@ def getMeterResults():
                 vermogenTerug = int(float(row[10:16])*1000) #watts
             if row[0:9] == "0-0:96.14":
                 tarief = int(row[12:16]) #1=hoog, 2=laag
-            if row[0:10] == "0-1:24.2.1":
+            if row[0:10] == "0-2:24.2.1":
                 gasAfgenomen = float(row[26:35]) #m3
     except:
         with open(logFile, "a") as myfile:
